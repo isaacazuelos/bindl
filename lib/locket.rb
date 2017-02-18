@@ -1,5 +1,4 @@
-require "locket/version"
+require 'locket/version'
+require 'locket/app'
 
-module Locket
-  # Your code goes here...
-end
+module Locket end
