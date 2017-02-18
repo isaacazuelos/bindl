@@ -1,36 +1,42 @@
 # Locket
 
-Welcome to your new gem! In this directory, you'll find the files you need to be able to package up your Ruby library into a gem. Put your Ruby code in the file `lib/locket`. To experiment with that code, run `bin/console` for an interactive prompt.
+A command line password/snippet manager.
 
-TODO: Delete this and the text above, and describe your gem
+<!-- TODO: get those sick badges -->
 
-## Installation
+This project is still in development — don't use it yet!
 
-Add this line to your application's Gemfile:
+## Getting Started
 
-```ruby
-gem 'locket'
+You can install `locket` with
+
+``` sh
+git clone https://github.com/isaacazuelos/locket
+cd locket
+bundle
+rake install
 ```
 
-And then execute:
+It'll be a [`gem`][gem] when it's done.
 
-    $ bundle
-
-Or install it yourself as:
-
-    $ gem install locket
+[gem]: https://rubygems.org
 
 ## Usage
 
-TODO: Write usage instructions here
+Usage instructions to come!
 
-## Development
-
-After checking out the repo, run `bin/setup` to install dependencies. You can also run `bin/console` for an interactive prompt that will allow you to experiment.
-
-To install this gem onto your local machine, run `bundle exec rake install`. To release a new version, update the version number in `version.rb`, and then run `bundle exec rake release`, which will create a git tag for the version, push git commits and tags, and push the `.gem` file to [rubygems.org](https://rubygems.org).
+<!-- TODO: write usage instructions -->
 
 ## Contributing
 
-Bug reports and pull requests are welcome on GitHub at https://github.com/Isaac Azuelos/locket.
+Bug reports and pull requests are welcome on GitHub
+at <https://github.com/isaacazuelos/keep>. This project is intended to be a
+safe, welcoming space for collaboration, and contributors are expected to adhere
+to the [Contributor Covenant](http://contributor-covenant.org) code of conduct.
 
+Documentation is with `rdoc` for now — I haven't explored my options much, yet.
+
+## License
+
+The gem is available as open source under the terms of the
+[MIT License](http://opensource.org/licenses/MIT).
