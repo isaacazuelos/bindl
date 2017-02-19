@@ -12,8 +12,7 @@ module Locket
   # since extensions should be invisible.
   module Name
     # raised for invalid names
-    class InvalidNameError < RuntimeError
-    end
+    class InvalidNameError < RuntimeError; end
 
     module_function
 
