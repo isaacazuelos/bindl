@@ -17,14 +17,13 @@ describe Locket::Name do
         .to(eq('.entry'))
     end
     it 'should disallow directories' do
-      expect(Locket::Name.from_path('/dir/after/dir/', '/dir/'))
-        .to raise_error Locket::Name::InvalidNameError
+      expect do
+        Locket::Name.from_path('/dir/after/dir/', '/dir/')
+      end.to raise_error Locket::Name::InvalidNameError
     end
     it 'should remove all extensions' do
       expect(Locket::Name.from_path('/dir/entry.ext1.ext2', '/dir'))
         .to(eq('entry'))
-      expect(Locket::Name.from_path('/dir/.entry.ext1.', '/dir'))
-        .to(eq('.entry'))
     end
   end
 
@@ -37,10 +36,10 @@ describe Locket::Name do
     end
     it 'should not allow ending in path seperators' do
       expect do
-        Locket::Name.validate!('path/sep')
+        Locket::Name.validate!('path/sep/')
       end.to raise_error Locket::Name::InvalidNameError
     end
-    it 'should allow hidden files' do
+    it 'should allow hidden files and directories' do
       expect(Locket::Name.validate!('hidden/.name')).to eq('hidden/.name')
       expect(Locket::Name.validate!('.hidden/name')).to eq('.hidden/name')
     end

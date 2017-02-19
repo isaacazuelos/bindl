@@ -1,4 +1,5 @@
-
+# This file is responsible for extracting names from paths, and name
+# validation.
 
 module Locket
   # The `Locket::Name` module is a container for a few basic functions
@@ -18,8 +19,15 @@ module Locket
 
     # Extract the name that would be used to identify a file in a
     # store from that file's path.
-    def from_path(_path, _root)
-      nil
+    #
+    # Paths must be absolute or relative to the working directory.
+    def from_path(path, root)
+      path, root = from_path_sanity_check(path, root)
+      dir = File.dirname(path)[root.length..-1]
+      file = File.basename path
+      file = File.basename(file, '.*') while File.extname(file) != ''
+      file = File.join(dir, file)[1..-1] # +1 for the leading '/'
+      validate! file
     end
 
     # Make sure that a name is valid.
@@ -29,8 +37,23 @@ module Locket
     # A name is valid if it would unambiguously specify a single file
     # in a store. Since we want to allow hidden files and relative
     # directories, we need to be careful about how these are parsed.
-    def validate!(_name)
-      nil
+    def validate!(name)
+      raise InvalidNameError, 'names cannot end in "/"' if name.end_with? '/'
+      raise InvalidNameError, 'names cannot end in "."' if name.end_with? '.'
+      unless File.extname(name) == ''
+        raise InvalidNameError, 'names cannot have file extensions'
+      end
+      name
+    end
+
+    # Some sanity checks for the inputs to `Locket::Name.from_path`,
+    # to make sure that the `path` is a _file_ in `root`.
+    private def from_path_sanity_check(path, root)
+      raise InvalidNameError, 'path cannot be a directory' if path.end_with? '/'
+      path = File.absolute_path path
+      root = File.absolute_path root
+      raise 'path must be in root' unless path.start_with? root
+      [path, root]
     end
   end
 end
