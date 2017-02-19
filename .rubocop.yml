@@ -2,3 +2,11 @@ AllCops:
   TargetRubyVersion: 2.0
 Style/FrozenStringLiteralComment:
   Enabled: false
+Metrics/BlockLength:
+  Exclude:
+    - Guardfile
+    - spec/**/*_spec.rb
+    - locket.gemspec
+Style/GuardClause:
+  Exclude:
+    - locket.gemspec
