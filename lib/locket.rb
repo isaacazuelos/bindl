@@ -1,5 +1,7 @@
 require 'locket/version'
 require 'locket/app'
+require 'locket/store'
+require 'locket/entry'
 
 # The main namespace module for our library and application.
 module Locket
