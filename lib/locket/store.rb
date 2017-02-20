@@ -19,15 +19,16 @@ module Locket
     attr_reader :root
 
     def initialize(root = nil)
-      @root = File.absolute_path root || LOCKET_STORE_DIR
+      @root = File.absolute_path(root || LOCKET_STORE_DIR)
     end
 
     def exist?
       File.directory? @root
     end
 
-    def create
+    def create!
       FileUtils.mkdir_p @root
+      self
     end
 
     def each(opts = { hidden: false })
@@ -53,7 +54,11 @@ module Locket
         Locket::Name.from_path(path, @root) == name
       end.first
       return nil unless file
-      Locket::Entry.new(file)
+      Locket::Entry.new(self, file)
+    end
+
+    def add(name)
+      Entry.create! self, name
     end
 
     ### private instance methods

@@ -20,7 +20,7 @@ describe Locket::Store do
       expect(store.root).to eq File.absolute_path Locket::LOCKET_STORE_DIR
     end
   end
-  describe '.exist?' do
+  describe '#exist?' do
     it 'should be true if the store dir exists' do
       expect(Locket::Store.new('/').exist?).to be true
     end
@@ -28,15 +28,15 @@ describe Locket::Store do
       expect(Locket::Store.new('/dev/null/nope').exist?).to be false
     end
   end
-  describe '.create'  do
+  describe '.create!' do
     it 'should create the store\'s directory' do
       store = Locket::Store.new('/test/locket/')
       expect(store.exist?).to be false
-      expect(store.create)
+      expect(store.create!)
       expect(store.exist?).to be true
     end
   end
-  describe 'each' do
+  describe '#each' do
     it 'should be empty? if the store does not exist?' do
       expect(Locket::Store.new('/dne/locket').each.empty?).to be true
     end
@@ -77,7 +77,7 @@ describe Locket::Store do
       expect(@store.each).to eq ['/dir/store/entry.ext']
     end
   end
-  describe 'include?' do
+  describe '#include?' do
     it 'should be nil if the store does not exist?' do
       store = Locket::Store.new('/dne/test/locket/')
       expect(store.exist?).to be false
@@ -89,7 +89,7 @@ describe Locket::Store do
       expect(@store.include?('entry')).to be true
     end
   end
-  describe '[]' do
+  describe '#[]' do
     it 'should be nil if the store does not exist?' do
       store = Locket::Store.new('/dne/test/locket/')
       expect(store.exist?).to be false
@@ -102,6 +102,25 @@ describe Locket::Store do
     it 'should be the entry if the store include? the name' do
       expect(@store.exist?)
       expect(@store['entry']).to be_a Locket::Entry
+    end
+  end
+  describe '#add' do
+    it 'should raise if the store does not exist' do
+      store = Locket::Store.new('/dne/')
+      expect do
+        store.add('nope')
+      end.to raise_error Locket::Store::StoreDoesNotExistError
+    end
+    it 'should raise if the entry exists' do
+      FileUtils.mkdir_p '/dir/store/'
+      FileUtils.touch   '/dir/store/entry.yml'
+      expect do
+        @store.add('entry')
+      end.to raise_error Locket::Entry::EntryExistsError
+    end
+    it 'should create an entry with the name' do
+      @store.add('entry')
+      expect(@store.each).to include('/dir/store/entry.yml')
     end
   end
 end
