@@ -16,21 +16,30 @@ module Locket
     # raised when the store needs to exist
     class StoreDoesNotExistError < RuntimeError; end
 
+    # The path to the root of the locket directory where the files are kept.
     attr_reader :root
 
+    # Create a new store, setting it's `root`.
+    # Default `root` is `LOCKET_STORE_DIR`
     def initialize(root = nil)
       @root = File.absolute_path(root || LOCKET_STORE_DIR)
     end
 
+    # Does the directory for this store exist on the filesystem?
     def exist?
       File.directory? @root
     end
 
+    # Create the root directory for this store. This will create intermediate
+    # directories if requried. Returns `self`.
     def create!
       FileUtils.mkdir_p @root
       self
     end
 
+    # Return an array of the full path to each file that looks like a valid
+    # entry in the `Store`'s directory. By default this ignores hidden files,
+    # but you can include them by setting `hidden: true`.
     def each(opts = { hidden: false })
       res = []
       return res unless exist?
@@ -43,11 +52,18 @@ module Locket
       res
     end
 
+    # Is there an entry for the given `name` in this store?
     def include?(name)
       return nil unless exist?
       each.map { |path| Locket::Name.from_path path, @root }.include? name
     end
 
+    # Retrive an entry from the store by it's name.
+    #
+    # Raises:
+    #   - if the store doesn't exist
+    #   - if the name is invalid
+    #   - if the entry doesn't exist
     def [](name)
       return nil unless exist?
       file = each.select do |path|
@@ -57,8 +73,11 @@ module Locket
       Locket::Entry.new(self, file)
     end
 
+    # Add an entry to the store, create the file as needed.
+    # Returns the entry.
     def add(name)
       Entry.create! self, name
+      self[name]
     end
 
     ### private instance methods
