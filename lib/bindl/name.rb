@@ -1,8 +1,8 @@
 # This file is responsible for extracting names from paths, and name
 # validation.
 
-module Locket
-  # The `Locket::Name` module is a container for a few basic functions
+module Bindl
+  # The `Bindl::Name` module is a container for a few basic functions
   # used to work with names.
   #
   # Since data is kept in entires which are just files in the store,
@@ -45,7 +45,7 @@ module Locket
       name
     end
 
-    # Some sanity checks for the inputs to `Locket::Name.from_path`,
+    # Some sanity checks for the inputs to `Bindl::Name.from_path`,
     # to make sure that the `path` is a _file_ in `root`.
     private def from_path_sanity_check(path, root)
       raise InvalidNameError, 'path cannot be a directory' if path.end_with? '/'

@@ -1,28 +1,28 @@
 # This file is responsible for working with the store that is the root
-# of our locket directory.
+# of our directory.
 
 require 'fileutils'
 require 'find'
 
-require 'locket/name'
+require 'bindl/name'
 
-module Locket
-  # The `Locket::Store` class models the directory and operations that
-  # are valid forour locket.
+module Bindl
+  # The `Bindl::Store` class models the directory and operations that
+  # are valid for our storage directory.
   #
   # We also don't want people to have to worry about the entire path,
   # since extensions should be invisible.
   class Store
-    # raised when the store needs to exist
+    # Raised when the store needs to exist
     class StoreDoesNotExistError < RuntimeError; end
 
-    # The path to the root of the locket directory where the files are kept.
+    # The path to the root of the directory where the files are kept.
     attr_reader :root
 
-    # Create a new store, setting it's `root`.
-    # Default `root` is `LOCKET_STORE_DIR`
+    # Create a new store, setting it's `root`. Default `root` is
+    # `STORE_DIR`
     def initialize(root = nil)
-      @root = File.absolute_path(root || LOCKET_STORE_DIR)
+      @root = File.absolute_path(root || STORE_DIR)
     end
 
     # Does the directory for this store exist on the filesystem?
@@ -30,16 +30,17 @@ module Locket
       File.directory? @root
     end
 
-    # Create the root directory for this store. This will create intermediate
-    # directories if requried. Returns `self`.
+    # Create the root directory for this store. This will create
+    # intermediate directories if requried. Returns `self`.
     def create!
       FileUtils.mkdir_p @root
       self
     end
 
-    # Return an array of the full path to each file that looks like a valid
-    # entry in the `Store`'s directory. By default this ignores hidden files,
-    # but you can include them by setting `hidden: true`.
+    # Return an array of the full path to each file that looks like a
+    # valid entry in the `Store`'s directory. By default this ignores
+    # hidden files, but you can include them by setting `hidden:
+    # true`.
     def each(opts = { hidden: false })
       res = []
       return res unless exist?
@@ -55,7 +56,7 @@ module Locket
     # Is there an entry for the given `name` in this store?
     def include?(name)
       return nil unless exist?
-      each.map { |path| Locket::Name.from_path path, @root }.include? name
+      each.map { |path| Bindl::Name.from_path path, @root }.include? name
     end
 
     # Retrive an entry from the store by it's name.
@@ -67,14 +68,14 @@ module Locket
     def [](name)
       return nil unless exist?
       file = each.select do |path|
-        Locket::Name.from_path(path, @root) == name
+        Bindl::Name.from_path(path, @root) == name
       end.first
       return nil unless file
-      Locket::Entry.new(self, file)
+      Bindl::Entry.new(self, file)
     end
 
-    # Add an entry to the store, create the file as needed.
-    # Returns the entry.
+    # Add an entry to the store, create the file as needed. Returns
+    # the entry.
     def add(name)
       Entry.create! self, name
       self[name]
@@ -84,7 +85,7 @@ module Locket
 
     # Does a path contain a hidden component?
     private def hidden?(path)
-      name = Locket::Name.from_path path, @root
+      name = Bindl::Name.from_path path, @root
       name.split('/').any? { |comp| comp.start_with? '.' }
     end
 
@@ -92,8 +93,8 @@ module Locket
     private def valid_name?(path)
       return false if path == @root
       begin
-        Locket::Name.from_path path, @root
-      rescue Locket::Name::InvalidNameError
+        Bindl::Name.from_path path, @root
+      rescue Bindl::Name::InvalidNameError
         return false
       end
       true

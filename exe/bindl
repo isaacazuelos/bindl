@@ -1,6 +1,6 @@
 #!/usr/bin/env ruby
 
 require 'bundler/setup'
-require 'locket'
+require 'bindl'
 
-Locket::App.run
+Bindl::App.run

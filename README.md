@@ -1,6 +1,6 @@
-# Locket
+# Bindl
 
-A command line password/snippet manager.
+A place to keep your most valuable possessions.
 
 <!-- TODO: get those sick badges -->
 
@@ -8,11 +8,11 @@ This project is still in development — don't use it yet!
 
 ## Getting Started
 
-You can install `locket` with
+You can install `bindl` with
 
 ``` sh
-git clone https://github.com/isaacazuelos/locket
-cd locket
+git clone https://github.com/isaacazuelos/bindl
+cd bindl
 bundle
 rake install
 ```
@@ -30,7 +30,7 @@ Usage instructions to come!
 ## Contributing
 
 Bug reports and pull requests are welcome on GitHub
-at <https://github.com/isaacazuelos/keep>. This project is intended to be a
+at <https://github.com/isaacazuelos/bindl>. This project is intended to be a
 safe, welcoming space for collaboration, and contributors are expected to adhere
 to the [Contributor Covenant](http://contributor-covenant.org) code of conduct.
 

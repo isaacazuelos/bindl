@@ -1,5 +1,5 @@
-module Locket
-  # The `Locket::App` module ties the appliation logic together.
+module Bindl
+  # The `Bindl::App` module ties the appliation logic together.
   module App
     module_function
 

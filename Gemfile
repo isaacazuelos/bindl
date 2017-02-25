@@ -1,4 +1,4 @@
 source 'https://rubygems.org'
 
-# Specify your gem's dependencies in locket.gemspec
+# Specify your gem's dependencies in bindl.gemspec
 gemspec

@@ -1,20 +1,20 @@
 # coding: utf-8
 lib = File.expand_path('../lib', __FILE__)
 $LOAD_PATH.unshift(lib) unless $LOAD_PATH.include?(lib)
-require 'locket/version'
+require 'bindl/version'
 
 Gem::Specification.new do |spec|
-  spec.name          = 'locket'
-  spec.version       = Locket::VERSION
+  spec.name          = 'bindl'
+  spec.version       = Bindl::VERSION
   spec.authors       = ['Isaac Azuelos']
   spec.email         = ['isaac@azuelos.ca']
 
   spec.summary       = 'A command line password/snippet manager.'
-  spec.homepage      = 'https://github.com/isaacazuelos/locket'
+  spec.homepage      = 'https://github.com/isaacazuelos/bindl'
 
-  # Prevent pushing this gem to RubyGems.org. To allow pushes either set the
-  # 'allowed_push_host' to allow pushing to a single host or delete this
-  # section to allow pushing to any host.
+  # Prevent pushing this gem to RubyGems.org. To allow pushes either
+  # set the 'allowed_push_host' to allow pushing to a single host or
+  # delete this section to allow pushing to any host.
   if spec.respond_to?(:metadata)
     spec.metadata['allowed_push_host'] = "TODO: Set to 'http://mygemserver.com'"
   else
@@ -26,7 +26,7 @@ Gem::Specification.new do |spec|
   end
 
   spec.bindir        = 'exe'
-  spec.executables   = ['locket']
+  spec.executables   = ['bindl']
 
   spec.require_paths = ['lib']
 

@@ -4,9 +4,9 @@
 require 'yaml'
 require 'fileutils'
 
-require 'locket/name'
+require 'bindl/name'
 
-module Locket
+module Bindl
   # An Entry is a wrapper around a file in the store.
   class Entry
     # The entry exists, but shouldn't
@@ -32,7 +32,7 @@ module Locket
 
     # Create the file for an entry, returning an entry to wrap it.
     def self.create!(store, name)
-      raise Locket::Store::StoreDoesNotExistError unless store.exist?
+      raise Bindl::Store::StoreDoesNotExistError unless store.exist?
       Name.validate!(name)
       path = File.join(store.root, name + '.yml')
       raise EntryExistsError if File.file? path
@@ -68,7 +68,7 @@ module Locket
     # appropriately otherwise.
     private def exist!
       unless File.directory? @store.root
-        raise Locket::Store::StoreDoesNotExistError
+        raise Bindl::Store::StoreDoesNotExistError
       end
       raise EntryDoesNotExistError unless File.file? @path
     end
