@@ -1,8 +1,7 @@
 require 'bindl/keypath'
 
 module Bindl
-  # These methods extend an `Extension` subclass to be able to retrive
-  # values from the entry's contents.
+  # Get values out of nested data structures.
   module Get
     module_function
 
