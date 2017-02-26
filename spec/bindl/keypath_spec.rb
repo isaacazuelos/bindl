@@ -25,7 +25,7 @@ describe Bindl::Keypath do
     it 'should disallow collections as keys' do
       expect do
         kp.parse '[1]'
-      end.to raise_error Bindl::Keypath::KeypathError
+      end.to raise_error KeyError
       expect do
         kp.parse '{0:true}'
       end
@@ -33,7 +33,7 @@ describe Bindl::Keypath do
     it 'should disallow whitespace in keys' do
       expect do
         kp.parse ' '
-      end.to raise_error Bindl::Keypath::KeypathError
+      end.to raise_error KeyError
     end
   end
 end
