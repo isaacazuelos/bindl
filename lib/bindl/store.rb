@@ -44,11 +44,13 @@ module Bindl
     def each(opts = { hidden: false })
       res = []
       return res unless exist?
+
       Find.find(@root) do |child|
-        path = File.absolute_path(child)
-        next unless valid_name?(path) && File.file?(path)
-        next if hidden?(path) && !opts[:hidden]
-        res << path
+        path = File.absolute_path child, @root
+        name = entry? path
+        next unless name
+        next if Name.hidden?(name) && !opts[:hidden]
+        res << path if name
       end
       res
     end
@@ -56,7 +58,9 @@ module Bindl
     # Is there an entry for the given `name` in this store?
     def include?(name)
       return nil unless exist?
-      each.map { |path| Bindl::Name.from_path path, @root }.include? name
+      each(hidden: true).map do |path|
+        Bindl::Name.from_path path, @root
+      end.include?(name)
     end
 
     # Retrive an entry from the store by it's name.
@@ -67,7 +71,7 @@ module Bindl
     #   - if the entry doesn't exist
     def [](name)
       return nil unless exist?
-      file = each.select do |path|
+      file = each(hidden: true).select do |path|
         Bindl::Name.from_path(path, @root) == name
       end.first
       return nil unless file
@@ -81,23 +85,15 @@ module Bindl
       self[name]
     end
 
-    ### private instance methods
-
-    # Does a path contain a hidden component?
-    private def hidden?(path)
-      name = Bindl::Name.from_path path, @root
-      name.split('/').any? { |comp| comp.start_with? '.' }
-    end
-
-    # Does a path map to a valid name?
-    private def valid_name?(path)
-      return false if path == @root
+    # Is `path` and entry?
+    # To be an entry, it needs to be a valid name and exist.
+    private def entry?(path)
+      return nil unless File.file? path
       begin
-        Bindl::Name.from_path path, @root
-      rescue Bindl::Name::InvalidNameError
-        return false
+        Name.from_path path, @root
+      rescue Name::NameError
+        nil
       end
-      true
     end
   end
 end

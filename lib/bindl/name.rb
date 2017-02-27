@@ -12,7 +12,7 @@ module Bindl
   # since extensions should be invisible.
   module Name
     # raised for invalid names
-    class InvalidNameError < RuntimeError; end
+    class NameError < RuntimeError; end
 
     module_function
 
@@ -26,7 +26,7 @@ module Bindl
       file = File.basename path
       file = File.basename(file, '.*') while File.extname(file) != ''
       file = File.join(dir, file)[1..-1] # +1 for the leading '/'
-      validate! file
+      valid! file
     end
 
     # Make sure that a name is valid.
@@ -36,21 +36,26 @@ module Bindl
     # A name is valid if it would unambiguously specify a single file
     # in a store. Since we want to allow hidden files and relative
     # directories, we need to be careful about how these are parsed.
-    def validate!(name)
-      raise InvalidNameError, 'names cannot end in "/"' if name.end_with? '/'
-      raise InvalidNameError, 'names cannot end in "."' if name.end_with? '.'
+    def valid!(name)
+      raise NameError, 'names cannot end in "/"' if name.end_with? '/'
+      raise NameError, 'names cannot end in "."' if name.end_with? '.'
       unless File.extname(name) == ''
-        raise InvalidNameError, 'names cannot have file extensions'
+        raise NameError, 'names cannot have file extensions'
       end
       name
+    end
+
+    # Does a name represent a hidden file, i.e. a file starting with `.`.
+    def hidden?(name)
+      name.split('/').any? { |comp| comp.start_with? '.' }
     end
 
     # Some sanity checks for the inputs to `Bindl::Name.from_path`,
     # to make sure that the `path` is a _file_ in `root`.
     private def from_path_sanity_check(path, root)
-      raise InvalidNameError, 'path cannot be a directory' if path.end_with? '/'
-      path = File.absolute_path path
+      raise NameError, 'path cannot be a directory' if path.end_with? '/'
       root = File.absolute_path root
+      path = File.absolute_path(path, root)
       raise 'path must be in root' unless path.start_with? root
       [path, root]
     end

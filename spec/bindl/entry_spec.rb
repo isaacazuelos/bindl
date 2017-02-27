@@ -11,7 +11,7 @@ describe Bindl::Entry do
       FileUtils.touch 'invalid.'
       expect do
         Bindl::Entry.new @store, 'invalid.'
-      end.to raise_error Bindl::Name::InvalidNameError
+      end.to raise_error Bindl::Name::NameError
     end
     it 'should require that the file exists' do
       expect do
@@ -44,7 +44,7 @@ describe Bindl::Entry do
       FileUtils.touch path
       expect do
         Bindl::Entry.create! @store, path
-      end.to raise_error Bindl::Name::InvalidNameError
+      end.to raise_error Bindl::Name::NameError
     end
     it 'should create the file' do
       name = 'entry'
