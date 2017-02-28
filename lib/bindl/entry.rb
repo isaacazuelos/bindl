@@ -5,6 +5,7 @@ require 'yaml'
 require 'fileutils'
 
 require 'bindl/name'
+require 'bindl/encrypt'
 
 module Bindl
   # An Entry is a wrapper around a file in the store.
@@ -30,11 +31,17 @@ module Bindl
       exist!
     end
 
+    # Is the entry encrypted?
+    def encrypt?
+      @encrypter = Bindl::Encrypt.new @store if @path.end_with? '.gpg'
+    end
+
     # Create the file for an entry, returning an entry to wrap it.
-    def self.create!(store, name)
+    def self.create!(store, name, opts = { encrypt: false })
       raise Bindl::Store::StoreDoesNotExistError unless store.exist?
       Name.valid! name
-      path = File.join(store.root, name + '.yml')
+      suffix = '.yml' + (opts[:encrypt] ? '.gpg' : '')
+      path = File.join(store.root, name + suffix)
       raise EntryExistsError if File.file? path
       FileUtils.touch path
       Entry.new(store, path)
@@ -52,16 +59,19 @@ module Bindl
     def data
       exist!
       begin
-        res = YAML.load File.read @path
+        data = File.read @path
+        data = @encrypter.decrypt(data) if encrypt?
+        YAML.load data
       rescue Psych::SyntaxError
         raise EntrySyntaxError
       end
-      res
     end
 
     # Write new data to the file.
     def data=(new_data)
-      File.write(@path, new_data.to_yaml)
+      new_data = new_data.to_yaml
+      new_data = @encrypter.encrypt(new_data) if encrypt?
+      File.write(@path, new_data)
     end
 
     # Ensure that both the store and file for this entry exist, raise

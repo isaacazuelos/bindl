@@ -110,3 +110,13 @@ module Bindl
     end
   end
 end
+
+module Bindl
+  # This is just a helper for adding #set directly on an entry.
+  class Entry
+    # set the value at `keypath` in the entry's data.
+    def set(keypath, value, opts = { preserve: false })
+      self.data = Set.set(data, keypath, value, opts[:preserve])
+    end
+  end
+end

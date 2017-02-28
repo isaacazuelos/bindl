@@ -53,6 +53,11 @@ describe Bindl::Entry do
       end.to_not raise_error
       expect(File.file?('/entry.yml')).to be true
     end
+    it 'should encrypt if asked' do
+      name = 'enc-test'
+      entry = Bindl::Entry.create! @store, name, encrypt: true
+      expect(entry.path.end_with?('gpg')).to be true
+    end
   end
   describe '#delete!' do
     it 'should delete the file' do

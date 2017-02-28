@@ -41,7 +41,7 @@ module Bindl
     # valid entry in the `Store`'s directory. By default this ignores
     # hidden files, but you can include them by setting `hidden:
     # true`.
-    def each(opts = { hidden: false })
+    def each(hidden: false)
       res = []
       return res unless exist?
 
@@ -49,7 +49,7 @@ module Bindl
         path = File.absolute_path child, @root
         name = entry? path
         next unless name
-        next if Name.hidden?(name) && !opts[:hidden]
+        next if Name.hidden?(name) && !hidden
         res << path if name
       end
       res
@@ -80,8 +80,8 @@ module Bindl
 
     # Add an entry to the store, create the file as needed. Returns
     # the entry.
-    def add(name)
-      Entry.create! self, name
+    def add(name, opts = { encrypt: false })
+      Entry.create! self, name, encrypt: opts[:encrypt]
       self[name]
     end
 

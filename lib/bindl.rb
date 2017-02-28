@@ -1,7 +1,11 @@
 require 'bindl/version'
 require 'bindl/app'
 require 'bindl/store'
+
 require 'bindl/entry'
+require 'bindl/get'
+require 'bindl/set'
+
 require 'bindl/meta'
 
 # The main namespace module for our library and application.

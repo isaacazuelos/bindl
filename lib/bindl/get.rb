@@ -44,3 +44,13 @@ module Bindl
     end
   end
 end
+
+module Bindl
+  # This is just a helper for adding #get directly on an entry.
+  class Entry
+    # Get the value at `keypath` in the entry's data.
+    def get(keypath)
+      Get.get(data, keypath)
+    end
+  end
+end
