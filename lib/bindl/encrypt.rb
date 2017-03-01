@@ -1,11 +1,12 @@
+require 'open3'
 require 'shellwords'
 
 module Bindl
   class Encrypt
     class GPGError < RuntimeError; end
 
-    def initialize(store)
-      @store = store
+    def initialize(id)
+      @id = id
     end
 
     def encrypt(data)
@@ -16,22 +17,24 @@ module Bindl
       pipe_to_stdin command('--decrypt'), data
     end
 
-    def id
-      Shellwords.escape @store.meta.get 'encryption.gpg-id'
-    end
-
     private def pipe_to_stdin(cmd, data)
-      IO.popen(cmd, 'r+') do |pipe|
-        pipe.write data
-        pipe.close_write
-        pipe.read
+      res, status, errmsg = nil
+      Open3.popen3(cmd) do |input, output, error, thread|
+        input.write(data)
+        input.close_write
+        res = output.read
+        errmsg = error.read
+        status = thread.value
       end
+      raise(GPGError, "gpg error #{errmsg}") if status.exitstatus != 0
+      res
     end
 
     private def command(*extra)
       cmd = `which gpg2`.strip || `which gpg`.strip
       raise(GPGError, 'gpg not found') unless cmd
-      Shellwords.join([cmd, "--recipient=#{id}"].concat(extra))
+      args = ['--no-tty', "--recipient=#{@id}"]
+      Shellwords.join([cmd].concat(args, extra))
     end
   end
 end

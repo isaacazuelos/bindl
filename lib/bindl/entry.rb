@@ -24,16 +24,19 @@ module Bindl
 
     # Create a new entry in a store, given the full path.
     # You typically wouldn't call this yourself, but work with `Store#[]`.
-    def initialize(store, path)
+    def initialize(store, path, encrypter = Encrypt)
       @path = path
       @store = store
+      if path.end_with? '.gpg'
+        @encrypter = encrypter.new(store.meta.get(Bindl::ID_KEYPATH))
+      end
       Name.valid! Name.from_path(path, '/')
       exist!
     end
 
     # Is the entry encrypted?
     def encrypt?
-      @encrypter = Bindl::Encrypt.new @store if @path.end_with? '.gpg'
+      @encrypter != nil
     end
 
     # Create the file for an entry, returning an entry to wrap it.

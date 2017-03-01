@@ -13,4 +13,5 @@ module Bindl
   # This is the default directory where data is kept.
   STORE_DIR = File.join(ENV['HOME'], '.bindl').freeze
   META_NAME = '.meta'.freeze
+  ID_KEYPATH = 'encryption.gpg-id'.freeze
 end
