@@ -27,16 +27,14 @@ module Bindl
     def initialize(store, path, encrypter = Encrypt)
       @path = path
       @store = store
-      if path.end_with? '.gpg'
-        @encrypter = encrypter.new(store.meta.get(Bindl::ID_KEYPATH))
-      end
+      @encrypter = encrypter.new(store.meta.get(Bindl::ID_KEYPATH)) if encrypt?
       Name.valid! Name.from_path(path, '/')
       exist!
     end
 
     # Is the entry encrypted?
     def encrypt?
-      @encrypter != nil
+      @path.end_with? '.gpg'
     end
 
     # Create the file for an entry, returning an entry to wrap it.

@@ -1,6 +1,6 @@
 describe Bindl::Entry do
   include FakeFS::SpecHelpers
-  before(:each) { @store = Bindl::Store.new('/').create! }
+  before(:each) { @store = Bindl::Store.new('/test/').create! }
   describe '.initialize' do
     it 'should demand that the store exist' do
       expect do
@@ -33,14 +33,14 @@ describe Bindl::Entry do
       end.to raise_error Bindl::Store::StoreDoesNotExistError
     end
     it 'should raise if the file exists' do
-      path = '/entry.yml'
+      path = '/test/entry.yml'
       FileUtils.touch path
       expect do
         Bindl::Entry.create! @store, 'entry'
       end.to raise_error Bindl::Entry::EntryExistsError
     end
     it 'should raise if the entry would have an invalid name' do
-      path = '/entry.invalid.'
+      path = '/test/entry.invalid.'
       FileUtils.touch path
       expect do
         Bindl::Entry.create! @store, path
@@ -51,11 +51,11 @@ describe Bindl::Entry do
       expect do
         Bindl::Entry.create! @store, name
       end.to_not raise_error
-      expect(File.file?('/entry.yml')).to be true
+      expect(File.file?('/test/entry.yml')).to be true
     end
     it 'should encrypt if asked' do
-      name = 'enc-test'
-      entry = Bindl::Entry.create! @store, name, encrypt: true
+      @store.meta.set(Bindl::ID_KEYPATH, 'nonsense')
+      entry = Bindl::Entry.create! @store, 'enctest', encrypt: true
       expect(entry.path.end_with?('gpg')).to be true
     end
   end

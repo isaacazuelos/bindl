@@ -3,6 +3,7 @@ require 'bindl/keypath'
 module Bindl
   # Set values deep within nested arrays and hashs.
   module Set
+    # Error raised when `set` cannot insert a value.
     class InsertError < RuntimeError; end
 
     module_function
@@ -17,7 +18,7 @@ module Bindl
     def self.set_keys(data, keys, value, preserve)
       if keys.empty? || !collection?(data)
         raise(InsertError, 'cannot replace root') if preserve
-        return nest(keys, val)
+        return nest(keys, value)
       end
       remainder, deepest = deepest(keys, data)
       key = remainder.shift

@@ -1,5 +1,3 @@
-require 'bindl/store'
-
 module Bindl
   class Store
     # The meta entry used to store information about the store.

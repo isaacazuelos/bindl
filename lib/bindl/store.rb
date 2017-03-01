@@ -44,13 +44,12 @@ module Bindl
     def each(hidden: false)
       res = []
       return res unless exist?
-
       Find.find(@root) do |child|
         path = File.absolute_path child, @root
-        name = entry? path
+        name = as_name? path
         next unless name
         next if Name.hidden?(name) && !hidden
-        res << path if name
+        res << path
       end
       res
     end
@@ -60,7 +59,7 @@ module Bindl
       return nil unless exist?
       each(hidden: true).map do |path|
         Bindl::Name.from_path path, @root
-      end.include?(name)
+      end.include? name
     end
 
     # Retrive an entry from the store by it's name.
@@ -75,7 +74,7 @@ module Bindl
         Bindl::Name.from_path(path, @root) == name
       end.first
       return nil unless file
-      Bindl::Entry.new(self, file)
+      Bindl::Entry.new self, file
     end
 
     # Add an entry to the store, create the file as needed. Returns
@@ -85,9 +84,9 @@ module Bindl
       self[name]
     end
 
-    # Is `path` and entry?
+    # Is `path` a name?
     # To be an entry, it needs to be a valid name and exist.
-    private def entry?(path)
+    private def as_name?(path)
       return nil unless File.file? path
       begin
         Name.from_path path, @root

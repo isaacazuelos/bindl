@@ -23,6 +23,9 @@ describe Bindl::Name do
       expect(Bindl::Name.from_path('/dir/entry.ext1.ext2', '/dir'))
         .to(eq('entry'))
     end
+    it 'it should handle using "/" as a root' do
+      expect(Bindl::Name.from_path('asdf', '/')).to(eq('asdf'))
+    end
   end
 
   describe '.valid!' do
