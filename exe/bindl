@@ -3,4 +3,4 @@
 require 'bundler/setup'
 require 'bindl'
 
-Bindl::App.run
+Bindl::App.run(ARGV)
