@@ -33,15 +33,14 @@ module Bindl
 
     # A wrapper around the subprocess call to GPG.
     private def pipe_to_stdin(cmd, data)
-      res, status, errmsg = nil
-      Open3.popen3(cmd) do |input, output, error, thread|
+      res, errmsg = nil
+      Open3.popen3(cmd) do |input, output, error, _thread|
         input.write(data)
         input.close_write
         res = output.read
         errmsg = error.read
-        status = thread.value
       end
-      raise(GPGError, "gpg error #{errmsg}") if status.exitstatus.zero?
+      raise(GPGError, errmsg) unless errmsg.empty?
       res
     end
 
@@ -49,7 +48,7 @@ module Bindl
     private def command(*extra)
       cmd = `which gpg2`.strip || `which gpg`.strip
       raise(GPGError, 'gpg not found') unless cmd
-      args = ['--no-tty', "--recipient=#{@id}"]
+      args = ['--no-tty', '--quiet', "--recipient=#{@id}"]
       Shellwords.join([cmd].concat(args, extra))
     end
   end
