@@ -1,5 +1,5 @@
 describe Bindl::App do
-  class Bindl::TestCommand < Bindl::Command
+  class Bindl::Subcommand::TestCommand < Bindl::Subcommand::BaseCommand
     def description
       'some-test'
     end
@@ -10,7 +10,8 @@ describe Bindl::App do
   end
   describe '.command_list' do
     it 'should have the names of commands in it' do
-      expect(Bindl::App.command_list).to match Bindl::TestCommand.new.name
+      expect(Bindl::App.command_list)
+        .to(match(Bindl::Subcommand::TestCommand.new.name))
     end
     it 'should have the descriptions too' do
       expect(Bindl::App.command_list).to match 'some-test'

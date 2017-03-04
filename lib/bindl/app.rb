@@ -1,8 +1,7 @@
 require 'trollop'
 
-require 'bindl/command'
-
-require 'bindl/command/example'
+require 'bindl/subcommand'
+require 'bindl/subcommand/get'
 
 module Bindl
   # The `Bindl::App` module ties the appliation logic together.
@@ -10,8 +9,8 @@ module Bindl
     module_function
 
     def command_list
-      return "no commands found\n" if Command.commands.empty?
-      Command.commands.reduce('') do |a, c|
+      return "no commands found\n" if Subcommand.commands.empty?
+      Subcommand.commands.reduce('') do |a, c|
         a + '  ' + c.name.ljust(17) + c.description + "\n"
       end
     end
@@ -29,7 +28,7 @@ BANNER
     end
 
     def parse_args(args)
-      names = Command.commands.map(&:name)
+      names = Subcommand.commands.map(&:name)
       Trollop.options(args) do
         version "bindl #{VERSION}"
         banner App.banner_text
@@ -42,11 +41,11 @@ BANNER
       global_opts = parse_args(args)
       name = args.shift
       Trollop.educate if name.nil?
-      command = Command.commands.select { |cmd| cmd.name == name }.first
+      command = Subcommand.commands.select { |cmd| cmd.name == name }.first
       abort "unknonw command #{name}" unless command
       begin
         command.run global_opts.merge command.parse args
-      rescue RuntimeError => e
+      rescue StandardError => e
         puts "error: #{e}"
       end
     end
