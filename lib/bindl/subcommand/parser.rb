@@ -26,7 +26,7 @@ module Bindl
           opts[symbol] = args.shift
         end
         unless args.empty?
-          raise(ParserError, "unexpected extra argument '#{args.shift}'")
+          raise(ParserError, "unknown argument '#{args.shift}'")
         end
         opts
       end
