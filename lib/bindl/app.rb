@@ -4,6 +4,7 @@ require 'bindl/subcommand'
 
 require 'bindl/subcommand/get'
 require 'bindl/subcommand/path'
+require 'bindl/subcommand/show'
 
 module Bindl
   # The `Bindl::App` module ties the appliation logic together.
@@ -44,12 +45,12 @@ BANNER
       name = args.shift
       Trollop.educate if name.nil?
       command = Subcommand.commands.select { |cmd| cmd.name == name }.first
-      begin
-        raise "unknown command '#{name}'" unless command
-        command.run global_opts.merge command.parse args
-      rescue StandardError => e
-        puts "Error: #{e}."
-      end
+      # begin
+      raise "unknown command '#{name}'" unless command
+      command.run global_opts.merge command.parse args
+      # rescue StandardError => e
+      # puts "Error: #{e}."
+      # end
     end
   end
 end

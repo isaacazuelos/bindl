@@ -9,12 +9,10 @@ module Bindl
 
       def options(args, banners, opts = [])
         Trollop.options(args) do
-          banners.each do |line|
-            banner line
-          end
+          banners.each { |line| banner line }
           opts.each do |o|
             opt(o[:long], o[:description],
-                short: o[:short],
+                short:   o[:short],
                 default: o[:default])
           end
         end
