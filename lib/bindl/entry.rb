@@ -43,9 +43,11 @@ module Bindl
       Name.valid! name
       suffix = '.yml' + (opts[:encrypt] ? '.gpg' : '')
       path = File.join(store.root, name + suffix)
-      raise EntryExistsError if File.file? path
+      raise EntryExistsError, "An entry exists for '#{name}'" if File.file? path
       FileUtils.touch path
-      Entry.new(store, path)
+      entry = Entry.new(store, path)
+      entry.data = ''
+      entry
     end
 
     # Delete the file for the entry. After this is called the object remains,
