@@ -4,6 +4,7 @@ require 'bindl/subcommand'
 
 require 'bindl/subcommand/get'
 require 'bindl/subcommand/path'
+require 'bindl/subcommand/set'
 require 'bindl/subcommand/show'
 
 module Bindl
