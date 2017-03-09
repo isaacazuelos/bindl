@@ -47,11 +47,11 @@ describe Bindl::Subcommand::Parser do
         .to eq 'Usage: bindl test <pos1> <pos2>'
     end
     it 'should add flags as [-f|--flag]' do
-      expect(parser.usage('test', [], [{ short: 'f', long: 'flag' }]))
+      expect(parser.usage('test', [], [{ short: 'f', long: :flag }]))
         .to eq 'Usage: bindl test [-f|--flag]'
     end
     it 'should work altogether' do
-      expect(parser.usage('get', [:name, :keypath], [{ long: 'clip', short: 'c' }]))
+      expect(parser.usage('get', [:name, :keypath], [{ long: :clip, short: 'c' }]))
         .to eq 'Usage: bindl get <name> <keypath> [-c|--clip]'
     end
   end
