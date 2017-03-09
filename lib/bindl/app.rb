@@ -16,7 +16,7 @@ module Bindl
 
     def command_list
       return "no commands found\n" if Subcommand.commands.empty?
-      Subcommand.commands.reduce('') do |a, c|
+      Subcommand.commands.sort_by(&:name).reduce('') do |a, c|
         a + '  ' + c.name.ljust(17) + c.description + "\n"
       end
     end
