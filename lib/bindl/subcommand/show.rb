@@ -20,6 +20,7 @@ module Bindl
       def run(opts)
         store = Bindl::Store.new
         entry = store[opts[:name]]
+        raise "no entry found for '#{opts[:name]}'" unless entry
         puts entry.data.to_yaml
       end
     end

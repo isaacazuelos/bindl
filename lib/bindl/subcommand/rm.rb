@@ -19,6 +19,7 @@ module Bindl
       def run(opts)
         store = Bindl::Store.new
         entry = store[opts[:name]]
+        raise "no entry found for '#{opts[:name]}'" unless entry
         entry.delete!
       end
     end
