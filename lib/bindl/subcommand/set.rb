@@ -21,8 +21,7 @@ module Bindl
 
       def parse(args)
         pos = [:name, :keypath, :value]
-        banners = [Parser.header(name, description),
-                   Parser.usage(name, pos, {})]
+        banners = [Parser.header(name, description), Parser.usage(name, pos)]
         opts = Parser.options(args, banners, [preserve_flag])
         Parser.positional(args, pos, opts)
       end

@@ -10,9 +10,8 @@ module Bindl
 
       def parse(args)
         pos = [:name]
-        banners = [Parser.header(name, description),
-                   Parser.usage(name, pos, {})]
-        opts = Parser.options(args, banners, [])
+        banners = [Parser.header(name, description), Parser.usage(name, pos)]
+        opts = Parser.options(args, banners)
         Parser.positional(args, pos, opts)
       end
 
