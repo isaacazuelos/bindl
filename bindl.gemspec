@@ -9,7 +9,7 @@ Gem::Specification.new do |spec|
   spec.authors       = ['Isaac Azuelos']
   spec.email         = ['isaac@azuelos.ca']
 
-  spec.summary       = 'A command line password/snippet manager.'
+  spec.summary       = 'A command line snippet manager.'
   spec.homepage      = 'https://github.com/isaacazuelos/bindl'
 
   # Prevent pushing this gem to RubyGems.org. To allow pushes either

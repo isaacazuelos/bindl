@@ -23,9 +23,6 @@ describe Bindl::Entry do
       end.to_not raise_error
     end
   end
-  describe '#path' do
-    # This is just an attr_accessor, so no tests are really needed.
-  end
   describe '.create!' do
     it 'should raise if the store does not exist' do
       expect do
@@ -53,10 +50,12 @@ describe Bindl::Entry do
       end.to_not raise_error
       expect(File.file?('/test/entry.yml')).to be true
     end
-    it 'should encrypt if asked' do
+    it 'should encrypt if asked, but fail without a key' do
       @store.meta.set(Bindl::ID_KEYPATH, 'nonsense')
-      entry = Bindl::Entry.create! @store, 'enctest', encrypt: true
-      expect(entry.path.end_with?('gpg')).to be true
+      # It should raise, since encrypted files need a key to exist.
+      expect do
+        Bindl::Entry.create! @store, 'enctest', encrypt: true
+      end.to raise_error Bindl::Encrypt::GPGError
     end
   end
   describe '#delete!' do
