@@ -5,6 +5,7 @@ require 'bindl/subcommand'
 require 'bindl/subcommand/add'
 require 'bindl/subcommand/get'
 require 'bindl/subcommand/path'
+require 'bindl/subcommand/rm'
 require 'bindl/subcommand/set'
 require 'bindl/subcommand/show'
 
