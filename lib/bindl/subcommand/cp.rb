@@ -5,7 +5,7 @@ module Bindl
   module Subcommand
     class Cp < BaseCommand
       def description
-        'Copy an entry'
+        'Copy an entry, preserving encryption'
       end
 
       def encrypt_flag
@@ -30,7 +30,8 @@ module Bindl
         store = Bindl::Store.new
         old = store[opts[:old]]
         raise "no file found for #{opts[:name]}" unless old
-        new = store.add(opts[:new], encrypt: opts[:encrypt])
+        # You can only make unencrpyted files encrypted. This is intentional.
+        new = store.add(opts[:new], encrypt: opts[:encrypt] || old.encrypt?)
         new.data = old.data
       end
     end

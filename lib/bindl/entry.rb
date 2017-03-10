@@ -44,6 +44,7 @@ module Bindl
       suffix = '.yml' + (opts[:encrypt] ? '.gpg' : '')
       path = File.join(store.root, name + suffix)
       raise EntryExistsError, "An entry exists for '#{name}'" if File.file? path
+      FileUtils.mkdir_p File.dirname path
       FileUtils.touch path
       entry = Entry.new(store, path)
       entry.data = ''
