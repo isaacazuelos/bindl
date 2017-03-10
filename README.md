@@ -9,13 +9,9 @@ This project is still in development — don't use it yet!
 
 ## TODO
 
-Things left for version 0.1
-
-- init
 - edit (for plaintext only)
-- mv
 
-Issues to make for 1.0
+Issues to make for release
 
 - unset
 - get 
