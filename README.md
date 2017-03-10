@@ -6,23 +6,6 @@ A place to keep your most valuable possessions.
 
 This project is still in development — don't use it yet!
 
-
-## TODO
-
-- edit (for plaintext only)
-
-Issues to make for release
-
-- unset
-- get 
-  - clipboard support
-- edit (for encrypted files)
-- list upgrades
-  - fancier tree processing
-  - colour!
-- cp, rm, mv
-  - glob support, multiple files, directory stuff
-
 ## Getting Started
 
 You can install `bindl` with

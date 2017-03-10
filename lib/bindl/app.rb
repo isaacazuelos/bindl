@@ -4,6 +4,7 @@ require 'bindl/subcommand'
 
 require 'bindl/subcommand/add'
 require 'bindl/subcommand/cp'
+require 'bindl/subcommand/edit'
 require 'bindl/subcommand/get'
 require 'bindl/subcommand/init'
 require 'bindl/subcommand/list'
