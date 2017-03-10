@@ -3,6 +3,7 @@ require 'trollop'
 require 'bindl/subcommand'
 
 require 'bindl/subcommand/add'
+require 'bindl/subcommand/cp'
 require 'bindl/subcommand/get'
 require 'bindl/subcommand/list'
 require 'bindl/subcommand/path'

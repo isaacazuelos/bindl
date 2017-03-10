@@ -3,9 +3,9 @@ require 'bindl/subcommand/parser'
 
 module Bindl
   module Subcommand
-    class Add < BaseCommand
+    class Cp < BaseCommand
       def description
-        'Make a new entry'
+        'Copy an entry'
       end
 
       def encrypt_flag
@@ -18,15 +18,20 @@ module Bindl
       end
 
       def parse(args)
-        pos = [:name]
-        banners = [Parser.header(name, description), Parser.usage(name, pos)]
-        opts = Parser.options(args, banners, [encrypt_flag])
+        pos = [:old, :new]
+        flags = [encrypt_flag]
+        banners = [Parser.header(name, description),
+                   Parser.usage(name, pos, flags)]
+        opts = Parser.options(args, banners, flags)
         Parser.positional(args, pos, opts)
       end
 
       def run(opts)
         store = Bindl::Store.new
-        store.add(opts[:name], encrypt: opts[:encrypt])
+        old = store[opts[:old]]
+        raise "no file found for #{opts[:name]}" unless old
+        new = store.add(opts[:new], encrypt: opts[:encrypt])
+        new.data = old.data
       end
     end
   end
