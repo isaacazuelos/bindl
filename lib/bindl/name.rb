@@ -50,9 +50,11 @@ module Bindl
       name.split('/').any? { |comp| comp.start_with? '.' }
     end
 
+    private_class_method
+
     # Some sanity checks for the inputs to `Bindl::Name.from_path`,
     # to make sure that the `path` is a _file_ in `root`.
-    private def from_path_sanity_check(path, root)
+    def from_path_sanity_check(path, root)
       raise NameError, 'path cannot be a directory' if path.end_with? '/'
       root = File.absolute_path root
       path = File.absolute_path(path, root)

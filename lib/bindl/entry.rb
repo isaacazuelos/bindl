@@ -78,9 +78,11 @@ module Bindl
       File.write(@path, new_data)
     end
 
+    private 
+    
     # Ensure that both the store and file for this entry exist, raise
     # appropriately otherwise.
-    private def exist!
+    def exist!
       unless File.directory? @store.root
         raise Bindl::Store::StoreDoesNotExistError
       end

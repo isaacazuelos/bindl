@@ -84,9 +84,11 @@ module Bindl
       self[name]
     end
 
+    private
+    
     # Is `path` a name?
     # To be an entry, it needs to be a valid name and exist.
-    private def as_name?(path)
+    def as_name?(path)
       return nil unless File.file? path
       begin
         Name.from_path path, @root

@@ -14,7 +14,9 @@ module Bindl
       keypath.split('.').map { |segment| parse_segment segment }
     end
 
-    private def parse_segment(segment)
+    private_class_method
+
+    def parse_segment(segment)
       segment = YAML.load(segment)
       if [Hash, Array, Set].include?(segment.class)
         raise(KeyError, 'keys must be scalar')
