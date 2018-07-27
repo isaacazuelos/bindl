@@ -1,5 +1,7 @@
 # Bindl
 
+Abandoned in favour of a rewrite called `keep`.
+
 A place to keep your most valuable possessions.
 
 [![Build Status](https://travis-ci.org/isaacazuelos/bindl.svg?branch=master)](https://travis-ci.org/isaacazuelos/bindl) [![Coverage Status](https://coveralls.io/repos/github/isaacazuelos/bindl/badge.svg?branch=master)](https://coveralls.io/github/isaacazuelos/bindl?branch=master)
